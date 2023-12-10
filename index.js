@@ -5,19 +5,19 @@ const fs = require("fs");
 const rateLimit = require("express-rate-limit");
 const jwt = require("jsonwebtoken");
 const path = require("path");
+require("dotenv").config();
 
 const { MakeID, sleep } = require("./structs/functions");
 const { createError } = require("./structs/error");
 const { backend, error } = require("./structs/log");
 
-const config = require("./Config/config.json");
 const tokensFile = "./tokenManager/tokens.json";
 const clientSettingsDir = "./ClientSettings";
 const tokenPrefix = "eg1~";
 const exchangeCodes = [];
 
-global.JWT_SECRET = 'const PORT = 8080';
-const PORT = 8080;
+global.JWT_SECRET = process.env.JWT_SECRET;
+const PORT = process.env.PORT || 8080;
 
 if (!fs.existsSync(clientSettingsDir)) {
   fs.mkdirSync(clientSettingsDir);
