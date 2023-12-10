@@ -26,8 +26,8 @@ if (!fs.existsSync(clientSettingsDir)) {
 let tokens = JSON.parse(fs.readFileSync(tokensFile).toString());
 
 // Token expiration check and update
-Object.keys(tokens).forEach(tokenType => {
-  tokens[tokenType] = tokens[tokenType].filter(token =>
+Object.keys(tokens).forEach((tokenType) => {
+  tokens[tokenType] = tokens[tokenType].filter((token) =>
     isTokenValid(token.token)
   );
 });
@@ -38,12 +38,13 @@ global.accessTokens = tokens.accessTokens;
 global.refreshTokens = tokens.refreshTokens;
 global.clientTokens = tokens.clientTokens;
 
-mongoose.connect(config.mongodb.database, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose
+  .connect(process.env.MONGODB_DATABASE, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => backend("Agency connected to MongoDB!"))
-  .catch(err => {
+  .catch((err) => {
     error("MongoDB failed to connect.");
     throw err;
   });
@@ -59,7 +60,10 @@ startServer();
 handle404Errors();
 
 function isTokenValid(token) {
-  let decodedToken = jwt.decode(token.replace(tokenPrefix, ""));
+  return (
+    DateAddHours(new Date(decodedToken.creation_date), decodedToken.hours_expire).getTime() >
+    new Date().getTime()
+  );
   return DateAddHours(new Date(decodedToken.creation_date), decodedToken.hours_expire).getTime() > new Date().getTime();
 }
 
@@ -75,7 +79,7 @@ function setRateLimit() {
 
 function registerRoutes() {
   const routesPath = path.join(__dirname, "routes");
-  fs.readdirSync(routesPath).forEach(fileName => {
+  fs.readdirSync(routesPath).forEach((fileName) => {
     app.use(require(path.join(routesPath, fileName)));
   });
 }
