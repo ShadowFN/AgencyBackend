@@ -86,7 +86,7 @@ function registerRoutes() {
 
 function startServer() {
   app.listen(PORT, () => {
-    backend(`Agency started on port ${PORT}`);
+    console.log("AgencyBackend started on port", PORT);
 
     require("./xmpp/xmpp.js");
     require("./DiscordBot");
