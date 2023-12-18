@@ -43,7 +43,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => backend("Agency connected to MongoDB!"))
+  .then(() => )
   .catch((err) => {
     error("MongoDB failed to connect.");
     throw err;
@@ -86,7 +86,7 @@ function registerRoutes() {
 
 function startServer() {
   app.listen(PORT, () => {
-    console.log("AgencyBackend started on port", PORT);
+    console.log('\x1b[33m%s\x1b[0m',"AgencyBackend started on port", PORT);
 
     require("./xmpp/xmpp.js");
     require("./DiscordBot");
