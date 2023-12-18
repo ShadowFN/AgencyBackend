@@ -43,7 +43,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => )
+  .then(() => console.log('\x1b[33m%s\x1b[0m',"Agency connected to MongoDB"))
   .catch((err) => {
     error("MongoDB failed to connect.");
     throw err;
