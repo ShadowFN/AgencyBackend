@@ -12,7 +12,7 @@ const Friends = require("../model/friends.js");
 const port = 80;
 const server = app.listen(port);
 const wss = new WebSocket({ server });
-const matchmaker = require("../matchmaker/matchmaker.js");
+const matchmaker = require("../connections/matchmaker.js");
 
 global.xmppDomain = "prod.ol.epicgames.com";
 global.Clients = [];
