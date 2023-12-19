@@ -88,7 +88,7 @@ function startServer() {
   app.listen(PORT, () => {
     console.log('\x1b[33m%s\x1b[0m',"AgencyBackend started on port", PORT);
 
-    require("./xmpp/xmpp.js");
+    require("./connections/xmpp.js");
     require("./DiscordBot");
   }).on("error", async (err) => {
     if (err.code === "EADDRINUSE") {
