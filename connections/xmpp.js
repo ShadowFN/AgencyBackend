@@ -37,7 +37,7 @@ app.get("/clients", (req, res) => {
     res.send(JSON.stringify(data, null, 2));
 });
 
-wss.on('listening', () => log.xmpp(`XMPP and Matchmaker started listening on port ${port}`));
+wss.on('listening', () => console.log('\x1b[33m%s\x1b[0m',"XMPP and Matchmaker started on port", port));
 
 wss.on('connection', ws => {
     ws.on('error', () => {});
