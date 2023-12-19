@@ -4,7 +4,6 @@ const XMLParser = require("xml-parser");
 const express = require("express");
 const app = express();
 
-const log = require("../structs/log.js");
 const functions = require("../structs/functions.js");
 const User = require("../model/user.js");
 const Friends = require("../model/friends.js");
