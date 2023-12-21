@@ -56,7 +56,7 @@ const connectToMongoDB = () => {
     });
 
     mongoose.connection.on("error", err => {
-        log.error("MongoDB failed to connect, please make sure you have MongoDB running.");
+        console.log("MongoDB failed to connect, please make sure you have MongoDB running.");
         throw err;
     });
 };
@@ -80,7 +80,7 @@ const startServer = () => {
         require("./DiscordBot");
     }).on("error", async (err) => {
         if (err.code == "EADDRINUSE") {
-            log.error(`Port ${PORT} is already in use!\nClosing in 3 seconds...`);
+            console.log(`Port ${PORT} is already in use!\nClosing in 3 seconds...`);
             await functions.sleep(3000);
             process.exit(0);
         } else throw err;
