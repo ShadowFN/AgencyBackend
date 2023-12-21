@@ -4,111 +4,103 @@ const mongoose = require("mongoose");
 const fs = require("fs");
 const rateLimit = require("express-rate-limit");
 const jwt = require("jsonwebtoken");
-const path = require("path");
-require("dotenv").config();
+const dotenv = require("dotenv");
+const error = require("./structs/error.js");
+const functions = require("./structs/functions.js");
 
-const { MakeID, sleep } = require("./structs/functions");
-const { createError } = require("./structs/error");
-const { backend, error } = require("./structs/log");
+dotenv.config(); // Loads variables from .env file
 
-const tokensFile = "./tokenManager/tokens.json";
-const clientSettingsDir = "./ClientSettings";
-const tokenPrefix = "eg1~";
-const exchangeCodes = [];
+const PORT = 3551;
 
-global.JWT_SECRET = process.env.JWT_SECRET;
-const PORT = process.env.PORT || 8080;
+const initializeApp = () => {
+    setupDirectories();
+    initializeSecret();
+    cleanExpiredTokens();
+    connectToMongoDB();
+    setupMiddleware();
+    loadRoutes();
+    startServer();
+};
 
-if (!fs.existsSync(clientSettingsDir)) {
-  fs.mkdirSync(clientSettingsDir);
-}
 
-let tokens = JSON.parse(fs.readFileSync(tokensFile).toString());
+const setupDirectories = () => {
+    if (!fs.existsSync("./ClientSettings")) fs.mkdirSync("./ClientSettings");
+};
 
-// Token expiration check and update
-Object.keys(tokens).forEach((tokenType) => {
-  tokens[tokenType] = tokens[tokenType].filter((token) =>
-    isTokenValid(token.token)
-  );
-});
+const initializeSecret = () => {
+    global.JWT_SECRET = functions.MakeID();
+};
 
-fs.writeFileSync(tokensFile, JSON.stringify(tokens, null, 2));
+const cleanExpiredTokens = () => {
+    const tokens = JSON.parse(fs.readFileSync("./tokenManager/tokens.json").toString());
 
-global.accessTokens = tokens.accessTokens;
-global.refreshTokens = tokens.refreshTokens;
-global.clientTokens = tokens.clientTokens;
+    for (let tokenType in tokens) {
+        tokens[tokenType] = tokens[tokenType].filter(token => {
+            let decodedToken = jwt.decode(token.token.replace("eg1~", ""));
+            return DateAddHours(new Date(decodedToken.creation_date), decodedToken.hours_expire).getTime() > new Date().getTime();
+        });
+    }
 
-mongoose
-  .connect(process.env.MONGODB_DATABASE, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log('\x1b[33m%s\x1b[0m',"Agency connected to MongoDB"))
-  .catch((err) => {
-    error("MongoDB failed to connect.");
-    throw err;
-  });
+    fs.writeFileSync("./tokenManager/tokens.json", JSON.stringify(tokens, null, 2));
 
-app.use(setRateLimit());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+    global.accessTokens = tokens.accessTokens;
+    global.refreshTokens = tokens.refreshTokens;
+    global.clientTokens = tokens.clientTokens;
 
-registerRoutes();
+    global.exchangeCodes = [];
+};
 
-startServer();
+const connectToMongoDB = () => {
+    mongoose.connect(process.env.MONGODB_DATABASE, () => {
+        console.log('\x1b[33m%s\x1b[0m',"Agency connected to MongoDB");
+    });
 
-handle404Errors();
+    mongoose.connection.on("error", err => {
+        log.error("MongoDB failed to connect, please make sure you have MongoDB running.");
+        throw err;
+    });
+};
 
-function isTokenValid(token) {
-  return (
-    DateAddHours(new Date(decodedToken.creation_date), decodedToken.hours_expire).getTime() >
-    new Date().getTime()
-  );
-  return DateAddHours(new Date(decodedToken.creation_date), decodedToken.hours_expire).getTime() > new Date().getTime();
-}
+const setupMiddleware = () => {
+    app.use(rateLimit({ windowMs: 0.5 * 60 * 1000, max: 45 }));
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
+};
 
-function DateAddHours(pdate, number) {
-  let date = pdate;
-  date.setHours(date.getHours() + number);
-  return date;
-}
+const loadRoutes = () => {
+    fs.readdirSync("./routes").forEach(fileName => {
+        app.use(require(`./routes/${fileName}`));
+    });
+};
 
-function setRateLimit() {
-  return rateLimit({ windowMs: 0.5 * 60 * 1000, max: 45 });
-}
+const startServer = () => {
+    app.listen(PORT, () => {
+        console.log('\x1b[33m%s\x1b[0m',"Agency started on port", PORT);
+        require("./connections/xmpp.js");
+        require("./DiscordBot");
+    }).on("error", async (err) => {
+        if (err.code == "EADDRINUSE") {
+            log.error(`Port ${PORT} is already in use!\nClosing in 3 seconds...`);
+            await functions.sleep(3000);
+            process.exit(0);
+        } else throw err;
+    });
 
-function registerRoutes() {
-  const routesPath = path.join(__dirname, "routes");
-  fs.readdirSync(routesPath).forEach((fileName) => {
-    app.use(require(path.join(routesPath, fileName)));
-  });
-}
+    app.use((req, res, next) => {
+        error.createError(
+            "errors.com.epicgames.common.not_found",
+            "Sorry, the resource you were trying to find could not be found",
+            undefined, 1004, undefined, 404, res
+        );
+    });
+};
 
-function startServer() {
-  app.listen(PORT, () => {
-    console.log('\x1b[33m%s\x1b[0m',"AgencyBackend started on port", PORT);
+const DateAddHours = (pdate, number) => {
+    let date = new Date(pdate);
+    date.setHours(date.getHours() + number);
+    return date;
+};
 
-    require("./connections/xmpp.js");
-    require("./DiscordBot");
-  }).on("error", async (err) => {
-    if (err.code === "EADDRINUSE") {
-      error(`Port ${PORT} is already in use!\nClosing in 3 seconds...`);
-      await sleep(3000);
-      process.exit(0);
-    } else throw err;
-  });
-}
+// Initialize the app
+initializeApp();
 
-function handle404Errors() {
-  app.use((req, res, next) => {
-    createError(
-      "errors.com.epicgames.common.not_found",
-      "Sorry the resource you were trying to find could not be found",
-      undefined,
-      1004,
-      undefined,
-      404,
-      res
-    );
-  });
-}
