@@ -5,8 +5,8 @@ const fs = require("fs");
 const crypto = require("crypto");
 const path = require("path");
 
-const User = require("../model/user.js");
-const Profile = require("../model/profiles.js");
+const userModulePath = path.resolve(__dirname, '../model/user.js');
+const ProfileModulePath = path.resolve(__dirname, '../model/profiles.js');
 const profileManager = require("../structs/profile.js");
 const Friends = require("../model/friends.js");
 
