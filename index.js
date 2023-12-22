@@ -5,8 +5,8 @@ const fs = require("fs");
 const rateLimit = require("express-rate-limit");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
-const error = require("./structs/error.js");
-const functions = require("./structs/functions.js");
+const error = require("./src/structs/errorModule.js");
+const functions = require("./src/structs/functions.js");
 
 dotenv.config(); // Loads variables from .env file
 
