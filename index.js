@@ -32,7 +32,7 @@ const initializeSecret = () => {
 };
 
 const cleanExpiredTokens = () => {
-    const tokens = JSON.parse(fs.readFileSync("./tokenManager/tokens.json").toString());
+    const tokens = JSON.parse(fs.readFileSync("./src/token/tokens.json").toString());
 
     for (let tokenType in tokens) {
         tokens[tokenType] = tokens[tokenType].filter(token => {
@@ -41,7 +41,7 @@ const cleanExpiredTokens = () => {
         });
     }
 
-    fs.writeFileSync("./tokenManager/tokens.json", JSON.stringify(tokens, null, 2));
+    fs.writeFileSync("./src/token/tokens.json", JSON.stringify(tokens, null, 2));
 
     global.accessTokens = tokens.accessTokens;
     global.refreshTokens = tokens.refreshTokens;
@@ -56,7 +56,7 @@ const connectToMongoDB = () => {
     });
 
     mongoose.connection.on("error", err => {
-        console.log("MongoDB failed to connect, please make sure you have MongoDB running.");
+        console.log("MongoDB failed to connect");
         throw err;
     });
 };
@@ -68,16 +68,16 @@ const setupMiddleware = () => {
 };
 
 const loadRoutes = () => {
-    fs.readdirSync("./routes").forEach(fileName => {
-        app.use(require(`./routes/${fileName}`));
+    fs.readdirSync("./src/routes").forEach(fileName => {
+        app.use(require(`./src/routes/${fileName}`));
     });
 };
 
 const startServer = () => {
     app.listen(PORT, () => {
         console.log('\x1b[33m%s\x1b[0m',"Agency started on port", PORT);
-        require("./connections/xmpp.js");
-        require("./DiscordBot");
+        require("./src/connections/xmpp.js");
+        require("./src/Discord");
     }).on("error", async (err) => {
         if (err.code == "EADDRINUSE") {
             console.log(`Port ${PORT} is already in use!\nClosing in 3 seconds...`);
