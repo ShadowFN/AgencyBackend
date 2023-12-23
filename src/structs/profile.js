@@ -4,10 +4,10 @@ async function createProfiles(accountId) {
     const profiles = {};
 
     try {
-        const files = await fs.readdir('./Config/DefaultProfiles');
+        const files = await fs.readdir('./src/Profiles');
 
         for (const fileName of files) {
-            const filePath = `../Config/DefaultProfiles/${fileName}`;
+            const filePath = `../src/Profiles/${fileName}`;
             const profile = require(filePath);
 
             profile.accountId = accountId;
