@@ -7,7 +7,7 @@ const path = require("path");
 
 const userModulePath = path.resolve(__dirname, '../src/model/user.js');
 const ProfileModulePath = path.resolve(__dirname, '../src/model/profiles.js');
-const profileManager = require("./src/structs/profile.js");
+const ProfileMANModulePath = path.resolve(__dirname, './src/structs/profile.js');
 const FriendsModulePath = path.resolve(__dirname, '../src/model/friends.js');
 
 async function sleep(ms)
