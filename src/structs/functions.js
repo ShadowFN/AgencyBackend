@@ -99,8 +99,7 @@ if (req.headers["user-agent"])
 return memory;
 }
 
-function getContentPages(req)
-{
+function getContentPages(req) {
     const memory = GetVersionInfo(req);
     const contentpages = JSON.parse(
         fs.readFileSync(path.join(__dirname, "..", "responses", "contentpages.json")).toString()
@@ -108,40 +107,30 @@ function getContentPages(req)
 
     let Language = "en";
 
-    try
-    {
-        if (req.headers["accept-language"])
-        {
-            if (req.headers["accept-language"].includes("-") && req.headers["accept-language"] != "es-419")
-            {
+    try {
+        if (req.headers["accept-language"]) {
+            if (req.headers["accept-language"].includes("-") && req.headers["accept-language"] != "es-419") {
                 Language = req.headers["accept-language"].split("-")[0];
-            }
-            else
-            {
+            } else {
                 Language = req.headers["accept-language"];
             }
         }
-    }
-    catch { }
+    } catch { }
 
     const modes = ["saveTheWorldUnowned", "battleRoyale", "creative", "saveTheWorld"];
     const news = ["savetheworldnews", "battleroyalenews"];
 
-    try
-    {
+    try {
         modes.forEach(mode => {
             contentpages.subgameselectdata[mode].message.title =
                 contentpages.subgameselectdata[mode].message.title[Language];
             contentpages.subgameselectdata[mode].message.body =
                 contentpages.subgameselectdata[mode].message.body[Language];
         });
-    }
-    catch { }
+    } catch { }
 
-    try
-    {
-        if (memory.build < 5.30)
-        {
+    try {
+        if (memory.build < 5.30) {
             news.forEach(mode => {
                 contentpages[mode].news.messages[0].image =
                     "https://cdn.discordapp.com/attachments/927739901540188200/930879507496308736/discord.png";
@@ -149,15 +138,12 @@ function getContentPages(req)
                     "https://cdn.discordapp.com/attachments/927739901540188200/930879519882088508/lawin.png";
             });
         }
-    }
-    catch { }
+    } catch { }
 
-    try
-    {
-        contentpages.dynamicbackgrounds.backgrounds.backgrounds[0].stage = `season${ memory.season}`;
-        contentpages.dynamicbackgrounds.backgrounds.backgrounds[1].stage = `season${ memory.season}`;
-
-    catch { }
+    try {
+        contentpages.dynamicbackgrounds.backgrounds.backgrounds[0].stage = `season${memory.season}`;
+        contentpages.dynamicbackgrounds.backgrounds.backgrounds[1].stage = `season${memory.season}`;
+    } catch { }
 
     return contentpages;
 }
