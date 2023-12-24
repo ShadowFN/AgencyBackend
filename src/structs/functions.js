@@ -133,9 +133,9 @@ function getContentPages(req) {
         if (memory.build < 5.30) {
             news.forEach(mode => {
                 contentpages[mode].news.messages[0].image =
-                    "https://cdn.discordapp.com/attachments/927739901540188200/930879507496308736/discord.png";
+                    "https://cdn.discordapp.com/attachments/1188614087224086558/1188615248714944592/discord.png";
                 contentpages[mode].news.messages[1].image =
-                    "https://cdn.discordapp.com/attachments/927739901540188200/930879519882088508/lawin.png";
+                    "https://cdn.discordapp.com/attachments/1188614087224086558/1188614191548997682/Agency.png";
             });
         }
     } catch { }
