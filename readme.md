@@ -5,4 +5,10 @@
 
 ### This will have all the stuff you need to have a epic experience
 
-# Features:
+# Features: All the stuff you need to have a epic experice
+
+-Fully working locker
+
+-fully working xmpp and friends features
+
+-fully working discord bot
