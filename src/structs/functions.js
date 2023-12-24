@@ -178,7 +178,7 @@ currencyType: "MtxCurrency",
                         currencySubType: "",
                         regularPrice: 0,
                         finalPrice: 0,
-                        saleExpiration: "9999-12-02T01:12:00Z",
+                        saleExpiration: "9999-12-31T23:59:59.999Z",
                         basePrice: 0
                     }
                 ],
