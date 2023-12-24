@@ -3,12 +3,12 @@ const app = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-const error = require("../structs/error.js");
-const functions = require("../structs/functions.js");
+const error = require("../src/structs/errorModule.js");
+const functions = require("../src/structs/functions.js");
 
-const tokenManager = require("../tokenManager/tokenManager.js");
-const { verifyToken, verifyClient } = require("../tokenManager/tokenVerify.js");
-const User = require("../model/user.js");
+const tokenManager = require("../src/token/tokenManager.js");
+const { verifyToken, verifyClient } = require("../src/token/tokenVerify.js");
+const User = require("../src/model/user.js");
 
 app.post("/account/api/oauth/token", async (req, res) => {
     try {
