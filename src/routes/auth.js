@@ -13,7 +13,7 @@ const User = require("../src/model/user.js");
 app.post("/account/api/oauth/token", async (req, res) => {
     try {
         const clientId = getClientIdFromAuthorizationHeader(req.headers["authorization"]);
-        
+
         switch (req.body.grant_type) {
             case "client_credentials":
                 await handleClientCredentialsGrant(req, res, clientId);
@@ -244,18 +244,78 @@ async function handleExchangeCodeGrant(req, res) {
 }
 
 function sendVerificationResponse(req, res, decodedToken) {
-    // Implement the logic for sending verification response
-    // ...
+    // Your verification logic here...
+    // Customize the response based on the decoded token or any other criteria.
+    if (!decodedToken || !decodedToken.clid) {
+        return error.createError(
+            "errors.com.epicgames.common.oauth.invalid_token",
+            "Invalid token",
+            [], 1017, "invalid_token", 400, res
+        );
+    }
+
+    res.json({
+        message: "Token verification successful",
+        user_id: decodedToken.clid,
+        status: "verified"
+        // Add any other relevant information to your response
+    });
 }
 
 function handleExchangeEndpoint(req, res, token) {
-    // Implement the logic for handling exchange endpoint
-    // ...
+    try {
+        const decodedToken = jwt.decode(token.replace("eg1~", ""));
+        const exchange_code = functions.MakeID().replace(/-/ig, "");
+
+        global.exchangeCodes.push({
+            accountId: req.user.accountId,
+            exchange_code: exchange_code,
+            creatingClientId: decodedToken.clid
+        });
+
+        setTimeout(() => {
+            let exchangeCodeIndex = global.exchangeCodes.findIndex(i => i.exchange_code === exchange_code);
+
+            if (exchangeCodeIndex !== -1) {
+                global.exchangeCodes.splice(exchangeCodeIndex, 1);
+            }
+        }, 300000); // Remove exchange code in 5 minutes if unused
+
+        res.json({
+            expiresInSeconds: 300,
+            code: exchange_code,
+            creatingClientId: decodedToken.clid
+        });
+    } catch (err) {
+        handleError(err, res);
+    }
 }
 
 function handleSessionKill(req, res, token) {
-    // Implement the logic for handling session kill
-    // ...
+    try {
+        const accessIndex = global.accessTokens.findIndex(i => i.token === token);
+
+        if (accessIndex !== -1) {
+            const object = global.accessTokens[accessIndex];
+
+            global.accessTokens.splice(accessIndex, 1);
+
+            const xmppClient = global.Clients.find(i => i.token === object.token);
+            if (xmppClient) xmppClient.client.close();
+
+            const refreshIndex = global.refreshTokens.findIndex(i => i.accountId === object.accountId);
+            if (refreshIndex !== -1) global.refreshTokens.splice(refreshIndex, 1);
+        }
+
+        const clientIndex = global.clientTokens.findIndex(i => i.token === token);
+        if (clientIndex !== -1) global.clientTokens.splice(clientIndex, 1);
+
+        if (accessIndex !== -1 || clientIndex !== -1) functions.updateTokens();
+
+        res.status(204).end();
+    } catch (err) {
+        handleError(err, res);
+    }
 }
 
 function sendAuthV1TokenResponse(res) {
@@ -308,16 +368,16 @@ async function handleEpicOauthV2Token(req, res, clientId) {
         res.json({
             scope: req.body.scope || "basic_profile friends_list openid presence",
             token_type: "bearer",
-            access_token: "lawinsaccesstokenlol",
-            refresh_token: "lawinsrefreshtokenlol",
-            id_token: "lawinsidtokenlol",
+            access_token: "Agencyaccesstokenlol",
+            refresh_token: "Agencyrefreshtokenlol",
+            id_token: "Agencyidtokenlol",
             expires_in: 7200,
             expires_at: "9999-12-31T23:59:59.999Z",
             refresh_expires_in: 28800,
             refresh_expires_at: "9999-12-31T23:59:59.999Z",
             account_id: req.user.accountId,
             client_id: clientId,
-            application_id: "lawinsacpplicationidlol",
+            application_id: "Agencyacpplicationidlol",
             selected_account_id: req.user.accountId,
             merged_accounts: []
         });
