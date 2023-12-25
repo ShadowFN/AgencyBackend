@@ -1,5 +1,5 @@
-const User = require("../../model/user.js");
-const functions = require("../../structs/functions.js");
+const User = require("../../src/model/user.js");
+const functions = require("../../src/structs/functions.js");
 
 module.exports = {
     commandInfo: {
