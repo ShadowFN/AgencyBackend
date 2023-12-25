@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const Profile = require("../src/model/profiles.js");
-const Friends = require("../src/model/friends.js");
-const functions = require("../src/structs/functions.js");
+const Profile = require("../model/profiles.js");
+const Friends = require("../model/friends.js");
+const functions = require("../structs/functions.js");
 
-const { verifyToken, verifyClient } = require("../src/token/tokenVerify.js");
-const keychain = require("../src/keychain/keychain.json");
+const { verifyToken, verifyClient } = require("../token/tokenVerify.js");
+const keychain = require("../keychain/keychain.json");
 
 router.get("/fortnite/api/storefront/v2/catalog", (req, res) => {
   if (req.headers["user-agent"].includes("2870186")) {
