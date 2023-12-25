@@ -150,7 +150,7 @@ function getContentPages(req) {
 function getItemShop()
 {
     const catalog = JSON.parse(
-        fs.readFileSync(path.join(__dirname, "..", "responses", "catalog.json")).toString()
+        fs.readFileSync(path.join(__dirname, "..", "responses", "itemshop.json")).toString()
     );
     const CatalogConfig = JSON.parse(
         fs.readFileSync(path.join(__dirname, "..", "Config", "catalog_config.json").toString())
