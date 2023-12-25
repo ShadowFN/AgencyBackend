@@ -1,8 +1,8 @@
 const express = require("express");
 const app = express.Router();
 const fs = require("fs");
-const functions = require("../src/structs/functions.js");
-const { verifyToken, verifyClient } = require("../src/token/tokenVerify.js");
+const functions = require("../structs/functions.js");
+const { verifyToken, verifyClient } = require("../token/tokenVerify.js");
 
 let buildUniqueId = {};
 
