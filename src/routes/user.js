@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express.Router();
-const error = require("../structs/error.js");
+const error = require("../structs/errorModule");
 const { verifyToken, verifyClient } = require("../token/tokenVerify.js");
 const User = require("../model/user.js");
 
