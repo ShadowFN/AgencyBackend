@@ -1,9 +1,9 @@
 const express = require("express");
 const app = express.Router();
-const functions = require("../src/structs/functions.js");
-const Friends = require("../src/model/friends.js");
-const friendManager = require("../src/structs/friend.js");
-const { verifyToken, verifyClient } = require("../src/token/tokenVerify.js");
+const functions = require("../structs/functions.js");
+const Friends = require("../model/friends.js");
+const friendManager = require("../structs/friend.js");
+const { verifyToken, verifyClient } = require("../token/tokenVerify.js");
 
 const validationFail = (res) => {
     return res.status(400).json({
