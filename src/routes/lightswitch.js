@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { verifyToken, verifyClient } = require("../src/token/tokenVerify.js");
+const { verifyToken, verifyClient } = require("../token/tokenVerify.js");
 
 const fortniteStatusResponse = {
     "serviceInstanceId": "fortnite",
