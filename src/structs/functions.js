@@ -150,10 +150,10 @@ function getContentPages(req) {
 function getItemShop()
 {
     const catalog = JSON.parse(
-        fs.readFileSync(path.join(__dirname, "..", "responses", "itemshop.json")).toString()
+        fs.readFileSync(path.join(__dirname, "..", "responses", "itemshop2.json")).toString() //idk why if i didnt make itemshopv2 half of the item shop wont work
     );
     const CatalogConfig = JSON.parse(
-        fs.readFileSync(path.join(__dirname, "..", "Config", "catalog_config.json").toString())
+        fs.readFileSync(path.join(__dirname, "..", "Config", "itemshop.json").toString())
     );
 
     try
