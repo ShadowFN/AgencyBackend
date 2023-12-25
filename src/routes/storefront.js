@@ -5,7 +5,7 @@ const Friends = require("../src/model/friends.js");
 const functions = require("../src/structs/functions.js");
 
 const { verifyToken, verifyClient } = require("../src/token/tokenVerify.js");
-const keychain = require("../src/responses/keychain.json");
+const keychain = require("../src/keychain/keychain.json");
 
 router.get("/fortnite/api/storefront/v2/catalog", (req, res) => {
   if (req.headers["user-agent"].includes("2870186")) {
