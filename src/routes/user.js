@@ -1,8 +1,8 @@
 const express = require("express");
 const app = express.Router();
-const error = require("../src/structs/error.js");
-const { verifyToken, verifyClient } = require("../src/token/tokenVerify.js");
-const User = require("../src/model/user.js");
+const error = require("../structs/error.js");
+const { verifyToken, verifyClient } = require("../token/tokenVerify.js");
+const User = require("../model/user.js");
 
 const mapUserToResponse = (user) => ({
     id: user.accountId,
