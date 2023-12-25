@@ -1,6 +1,12 @@
-const User = require("../../model/user.js");
+const User = require("../../src/model/user.js");
 const fs = require("fs");
-const config = JSON.parse(fs.readFileSync("./Config/config.json").toString());
+const dotenv = require("dotenv");
+
+// Load environment variables from .env file
+dotenv.config();
+
+// Access environment variables
+const moderators = process.env.MODERATORS.split(',');
 
 module.exports = {
     commandInfo: {
@@ -18,7 +24,7 @@ module.exports = {
     execute: async (interaction) => {
         await interaction.deferReply({ ephemeral: true });
         
-        if (!config.moderators.includes(interaction.user.id)) return interaction.editReply({ content: "You do not have moderator permissions.", ephemeral: true });
+        if (!moderators.includes(interaction.user.id)) return interaction.editReply({ content: "You do not have moderator permissions.", ephemeral: true });
     
         const { options } = interaction;
         const targetUser = await User.findOne({ username_lower: (options.get("username").value).toLowerCase() });
@@ -30,4 +36,4 @@ module.exports = {
         
         interaction.editReply({ content: `Successfully unbanned ${targetUser.username}`, ephemeral: true });
     }
-}
+};
