@@ -1,13 +1,13 @@
 const express = require("express");
 const app = express.Router();
 
-const Friends = require("../src/model/friends");
-const Profile = require("../src/model/profiles.js");
-const profileManager = require("../src/structs/profile.js");
-const error = require("../src/structs/error.js");
-const functions = require("../src/structs/functions.js");
+const Friends = require("../model/friends");
+const Profile = require("../model/profiles.js");
+const profileManager = require("../structs/profile.js");
+const error = require("../structs/error.js");
+const functions = require("../structs/functions.js");
 
-const { verifyToken, verifyClient } = require("../src/token/tokenVerify.js");
+const { verifyToken, verifyClient } = require("../token/tokenVerify.js");
 
 global.giftReceived = {};
 
