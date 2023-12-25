@@ -4,7 +4,7 @@ const app = express.Router();
 const Friends = require("../model/friends");
 const Profile = require("../model/profiles.js");
 const profileManager = require("../structs/profile.js");
-const error = require("../structs/error.js");
+const error = require("../structs/errorModule.js");
 const functions = require("../structs/functions.js");
 
 const { verifyToken, verifyClient } = require("../token/tokenVerify.js");
