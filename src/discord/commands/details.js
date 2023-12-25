@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const User = require("../../model/user.js");
+const User = require("../../src/model/user.js");
 
 module.exports = {
     commandInfo: {
