@@ -1,5 +1,5 @@
-const Friends = require("../src/model/friends.js");
-const functions = require("../src/structs/functions.js");
+const Friends = require("../model/friends.js");
+const functions = require("../structs/functions.js");
 
 async function getFriends(accountId) {
     return await Friends.findOne({ accountId: accountId }).lean();
