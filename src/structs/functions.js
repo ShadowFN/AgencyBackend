@@ -102,7 +102,7 @@ return memory;
 function getContentPages(req) {
     const memory = GetVersionInfo(req);
     const contentpages = JSON.parse(
-        fs.readFileSync(path.join(__dirname, "..", "responses", "contentpages.json")).toString()
+        fs.readFileSync(path.join(__dirname, "..", "content", "contentpages.json")).toString()
     );
 
     let Language = "en";
