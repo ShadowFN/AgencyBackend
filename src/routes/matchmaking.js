@@ -1,8 +1,8 @@
 const express = require("express");
 const app = express.Router();
 const fs = require("fs");
-const functions = require("../structs/functions.js");
-const { verifyToken, verifyClient } = require("../tokenManager/tokenVerify.js");
+const functions = require("../src/structs/functions.js");
+const { verifyToken, verifyClient } = require("../src/token/tokenVerify.js");
 
 let buildUniqueId = {};
 
@@ -74,7 +74,7 @@ app.get("/fortnite/api/matchmaking/session/:sessionId", verifyToken, (req, res) 
         serverName: "[DS]fortnite-liveeugcec1c2e30ubrcore0a-z8hj-1968",
         serverAddress: gameServerInfo.serverAddress,
         serverPort: gameServerInfo.serverPort,
-        // ... (rest of the details)
+        // i need to add rest of the details
         lastUpdated: new Date().toISOString(),
         started: false
     };
