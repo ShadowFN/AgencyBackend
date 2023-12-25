@@ -2,7 +2,7 @@ const express = require("express");
 const app = express.Router();
 require("dotenv").config();
 
-const { verifyToken, verifyClient } = require("../src/token/tokenVerify.js");
+const { verifyToken, verifyClient } = require("../token/tokenVerify.js");
 
 const enableGlobalChat = process.env.ENABLE_GLOBAL_CHAT === 'true';
 
