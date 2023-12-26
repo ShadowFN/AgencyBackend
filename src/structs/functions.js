@@ -5,10 +5,10 @@ const fs = require("fs");
 const crypto = require("crypto");
 const path = require("path");
 
-const User = require('../model/user');
-const Profile = require('../model/profiles');
-const Friends = require('../model/friends');
-const profileManager = require('./structs/profile');
+const User = require('../model/user.js');
+const Profile = require('../model/profiles.js');
+const Friends = require('../model/friends.js');
+const profileManager = require('../structs/profile.js');
 
 async function sleep(ms)
 {
