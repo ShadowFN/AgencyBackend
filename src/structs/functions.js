@@ -5,10 +5,10 @@ const fs = require("fs");
 const crypto = require("crypto");
 const path = require("path");
 
-const userModulePath = path.resolve(__dirname, '../src/model/user.js');
-const ProfileModulePath = path.resolve(__dirname, '../src/model/profiles.js');
-const ProfileMANModulePath = path.resolve(__dirname, './src/structs/profile.js');
-const FriendsModulePath = path.resolve(__dirname, '../src/model/friends.js');
+const User = require('../model/user');
+const Profile = require('../model/profiles');
+const Friends = require('../model/friends');
+const profileManager = require('./structs/profile');
 
 async function sleep(ms)
 {
