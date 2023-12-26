@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express.Router();
 
-const { verifyToken, verifyClient } = require("../token/tokenCreation.js");
+const { verifyToken, verifyClient } = require("../token/tokenVerify.js");
 const functions = require("../structs/functions.js");
 
 const createEvent = (eventType, activeUntil, activeSince) => ({
