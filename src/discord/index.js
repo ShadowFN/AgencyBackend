@@ -13,7 +13,7 @@ const startBot = async () => {
 
         const commands = client.application.commands;
 
-        fs.readdirSync("./src/discord/commands").forEach((fileName) => {
+        fs.readdirSync("./discord/commands").forEach((fileName) => {
             const command = require(`./commands/${fileName}`);
             commands.create(command.commandInfo);
         });
@@ -22,7 +22,7 @@ const startBot = async () => {
     client.on("interactionCreate", (interaction) => {
         if (!interaction.isApplicationCommand()) return;
 
-        const commandPath = `./src/discord/commands/${interaction.commandName}.js`;
+        const commandPath = `./discord/commands/${interaction.commandName}.js`;
         if (fs.existsSync(commandPath)) {
             require(commandPath).execute(interaction);
         }
