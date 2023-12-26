@@ -404,7 +404,7 @@ async function registerUser(discordId, username, email, plainPassword) {
 
         function UpdateTokens()
         {
-            fs.writeFileSync("./tokenManager/tokens.json", JSON.stringify({
+            fs.writeFileSync("./src/token/tokens.json", JSON.stringify({
             accessTokens: global.accessTokens,
         refreshTokens: global.refreshTokens,
         clientTokens: global.clientTokens
