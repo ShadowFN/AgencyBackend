@@ -30,24 +30,25 @@ module.exports = {
         await interaction.deferReply({ ephemeral: true });
 
         const { options } = interaction;
+
         const discordId = interaction.user.id;
         const email = options.get("email").value;
         const username = options.get("username").value;
         const password = options.get("password").value;
 
-        const resp = await functions.registerUser(discordId, username, email, password);
-
-        const embed = new MessageEmbed()
+        await functions.registerUser(discordId, username, email, password).then(resp => {
+            let embed = new MessageEmbed()
             .setColor(resp.status >= 400 ? "#EE4B2B" : "#FFD700")
             .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })
-            .addField('Message', resp.message)
-            .setTimestamp();
+            .setFields(
+                { name: 'Message', value: resp.message },
+            )
+            .setTimestamp()
 
-        if (resp.status >= 400) {
-            return interaction.editReply({ embeds: [embed], ephemeral: true });
-        }
+            if (resp.status >= 400) return interaction.editReply({ embeds: [embed], ephemeral: true });
 
-        (interaction.channel ? interaction.channel : interaction.user).send({ embeds: [embed] });
-        interaction.editReply({ content: "You successfully created an account!", ephemeral: true });
+            (interaction.channel ? interaction.channel : interaction.user).send({ embeds: [embed] });
+            interaction.editReply({ content: "You successfully created an account!", ephemeral: true });
+        });
     }
-};
+}
