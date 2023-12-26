@@ -11,11 +11,13 @@ const { verifyToken, verifyClient } = require("../token/tokenVerify.js");
 const User = require("../model/user.js");
 
 app.post("/account/api/oauth/token", async (req, res) => {
+    let clientId; // Declare clientId in a wider scope
+
     try {
-        let clientId = functions.DecodeBase64(req.headers["authorization"].split(" ")[1]).split(":");
-
+        clientId = functions.DecodeBase64(req.headers["authorization"].split(" ")[1]).split(":");
+        
         if (!clientId[1]) throw new Error("invalid client id");
-
+        
         clientId = clientId[0];
     } catch {
         return error.createError(
