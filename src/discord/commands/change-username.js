@@ -1,4 +1,4 @@
-const User = require("../../src/model/user.js");
+const User = require("../../model/user.js");
 
 module.exports = {
     commandInfo: {
