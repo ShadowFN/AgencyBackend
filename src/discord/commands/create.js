@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const functions = require("../../src/structs/functions.js");
+const functions = require("../../structs/functions.js");
 
 module.exports = {
     commandInfo: {
