@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express.Router();
 
-const { verifyToken, verifyClient } = require("../token/tokenCreation.js");
+const { verifyToken, verifyClient } = require("../token/tokenVerify.js");
 
 app.get("/fortnite/api/version", (req, res) => {
     res.json({
