@@ -12,3 +12,7 @@
 -fully working xmpp and friends features
 
 -fully working discord bot
+
+but idk if they work 
+
+credits to lawin for mcp and discord commands
