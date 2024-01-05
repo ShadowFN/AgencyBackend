@@ -38,7 +38,6 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      select: true,
     },
   },
   {
@@ -50,29 +49,6 @@ const userSchema = new mongoose.Schema(
 // Virtual field for full name
 userSchema.virtual("fullName").get(function () {
   return `${this.firstName} ${this.lastName}`;
-});
-
-// Pre-save hook to hash the password before saving
-userSchema.pre("save", async function (next) {
-  // Only hash the password if it's modified or new
-  if (!this.isModified("password")) {
-    return next();
-  }
-
-  try {
-    // Generate a salt
-    const salt = await bcrypt.genSalt(10);
-
-    // Hash the password using the generated salt
-    const hashedPassword = await bcrypt.hash(this.password, salt);
-
-    // Set the hashed password back to the model
-    this.password = hashedPassword;
-
-    next();
-  } catch (error) {
-    return next(error);
-  }
 });
 
 const User = mongoose.model("User", userSchema);
