@@ -24,7 +24,7 @@ const initializeApp = () => {
 
 
 const setupDirectories = () => {
-    if (!fs.existsSync("./ClientSettings")) fs.mkdirSync("./ClientSettings");
+    if (!fs.existsSync("./src/ClientSettings")) fs.mkdirSync("./src/ClientSettings");
 };
 
 const initializeSecret = () => {
